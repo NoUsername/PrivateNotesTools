@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<project name = "Tomboy Encryption Tests in Java" default = "build" basedir = "./">
+	<property environment="env"/>
+	<property name="dir.bin" value="${env.PROJECTHOME}/bin" />
+	<property name="dir.src" value="${env.PROJECTHOME}/src" />
+	<property name="file.main" value="at.fhooe.mcm.tomboyCrypt.Test" />
+	<property name="file.jar" value="${dir.bin}/JarFile.jar" />
+	
+	<path id = "classpath">
+		<pathelement path = "${env.JAVA_HOME}/lib" />
+    <pathelement path = "${dir.bin}" />
+	</path>
+	
+	<target name = "pack" depends = "build" >
+		<jar destfile="${file.jar}"
+			basedir="${dir.bin}"
+			includes="**" >
+			<manifest>
+				<attribute name="Built-By" value="Paul K."/>
+				<attribute name="Implementation-Title" value="Tomboy Encryption Tests in Java"/>
+				<attribute name="Implementation-Version" value="1"/>
+				<attribute name="Main-Class" value="${file.main}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name = "build" >
+		<mkdir dir = "${dir.bin}" />
+		<javac srcdir = "${dir.src}"
+			destdir = "${dir.bin}"
+			includes = "**/*.java"
+			deprecation = "true">
+			<classpath refid = "classpath"/>
+		</javac>
+	</target>
+	
+	<target name = "clean" >
+		<delete quiet = "true" >
+			<fileset dir = "${dir.bin}">
+				<include name = "**/*.class" />
+				<include name = "**/*.jar" />
+			</fileset>
+		</delete>
+		<delete dir = "${dir.bin}" quiet = "true" />
+	</target>
+
+	<target name = "run" depends = "build" >
+		<java classname = "${file.main}" >
+			<classpath refid = "classpath" />
+		</java>
+	</target>
+	
+</project>
